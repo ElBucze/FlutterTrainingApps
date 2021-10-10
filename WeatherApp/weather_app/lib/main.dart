@@ -174,6 +174,9 @@ class _MyHomePageState extends State<MyHomePage> {
          //)
          ,
          TextField(
+           decoration:InputDecoration(
+           labelText: 'Enter city name'),
+           style: TextStyle(color: Colors.grey[100]),
            onChanged: (String str){
              currTxt=str;
            }
