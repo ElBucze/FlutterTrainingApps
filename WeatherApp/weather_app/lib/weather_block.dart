@@ -61,7 +61,7 @@ class WeatherBlock extends StatelessWidget {
                   nextDay(DateTime.now().add(Duration(days: 2)),Icons.wb_sunny_rounded , Colors.orange, "22℃"),
                   nextDay(DateTime.now().add(Duration(days: 3)),Icons.wb_cloudy, Colors.white, "20℃"),
                   nextDay(DateTime.now().add(Duration(days: 4)),Icons.wb_cloudy , Colors.white, "18℃"),
-                  nextDay(DateTime.now().add(Duration(days: 4)),Icons.wb_sunny_rounded , Colors.orange, "20℃"),
+                  nextDay(DateTime.now().add(Duration(days: 5)),Icons.wb_sunny_rounded , Colors.orange, "20℃"),
 
                //}
                ])])),],),

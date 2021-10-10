@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
 import './weather_block.dart';
+import './weather.dart';
+import 'package:http/http.dart' as http;
+
 void main() {
   runApp(const MyApp());
 }
@@ -30,7 +33,46 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
+  
   int activeFields = 0;
+  Map<String, Weather> activeFieldsMap = {};
+  
+  void addWeatherBox(Weather currWeather){
+    setState((){
+    activeFieldsMap[currWeather.city] = currWeather;
+    activeFields++;
+    print(currWeather);
+    });
+  }
+  
+  Future getWeather(cityName) async{
+    http.Response response= await http.get(Uri.parse("http://api.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=b88a3c5bce2787dd5e8c0db43cd0ed5f"));
+  var result = jsonDecode(response.body);
+  var tmp = Weather(cityName,result['main']['temp'].toString(),result['weather'][0]['description']);
+  if(result['cod']==200){
+  if(activeFieldsMap.containsKey(cityName))
+  {
+    activeFieldsMap[cityName]!.description=tmp.description;
+    activeFieldsMap[cityName]!.temp=tmp.temp;
+  }
+  else{
+  addWeatherBox(tmp);
+  }
+  }
+  else{
+    print('error');
+  }
+  }
+  
+  @override
+  void initState(){
+    super.initState();
+    getWeather('Szczecin');
+    getWeather('Warszawa');
+    getWeather('Boston');
+  }
+
 
   void _incrementCounter() {
     setState(() {
@@ -45,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.grey[700],
       appBar: AppBar(
@@ -65,7 +108,25 @@ class _MyHomePageState extends State<MyHomePage> {
       body:  Column(
        crossAxisAlignment: CrossAxisAlignment.center,
        children: [
-         WeatherBlock(Icons.wb_sunny_rounded, 'Szczecin', '26.3℃')
+         Flexible(child: ListView.builder(
+           itemCount: activeFieldsMap.length,
+           itemBuilder: (BuildContext context, int index){
+             return WeatherBlock(Icons.wb_sunny_rounded, activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.city, activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.temp);
+           },
+         ))
+         //ListView.builder(
+           //itemCount:activeFieldsMap.length,
+           //itemBuilder: (BuildContext context, int index){
+          
+         ///}
+         //)
+         ,
+         IconButton(
+           icon: Icon(Icons.add_circle_outline),
+           onPressed: (){},
+           color: Colors.amber[800],
+           iconSize: 30.0,
+        )
          
        ]
         
