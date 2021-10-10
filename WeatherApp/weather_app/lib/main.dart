@@ -4,7 +4,7 @@ import './weather_block.dart';
 import './weather.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather_icons/weather_icons.dart';
-
+import 'package:string_extensions/string_extensions.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -37,15 +37,23 @@ class _MyHomePageState extends State<MyHomePage> {
   
   
   int activeFields = 0;
+  String currTxt = '';
   Map<String, Weather> activeFieldsMap = {};
   
   void addWeatherBox(Weather currWeather){
     setState((){
     activeFieldsMap[currWeather.city] = currWeather;
     activeFields++;
-    print(currWeather);
     });
   }
+  void removeWeatherBox(String city){
+    setState((){
+    activeFieldsMap.remove(city);
+    activeFields++;
+    });
+  }
+
+  void newWeatherlocationHandler(){}
   
   IconData descriptionToIcon(String desc){
     IconData i = Icons.not_interested;
@@ -114,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
     getWeather('Boston');
     getWeather('London');
     getWeather('Berlin');
+    getWeather('Oslo');
   }
 
 
@@ -139,11 +148,11 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.grey[850],
         leading: IconButton(
           onPressed: () {},
-          icon: Icon(Icons.menu),
+          icon:const Icon(Icons.menu),
           color: Colors.amber[800],
         ),
         actions: [IconButton(
-          icon: Icon(Icons.search),
+          icon:const Icon(Icons.search),
           onPressed: () {},
           color: Colors.amber[800],
         )],
@@ -154,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
          Flexible(child: ListView.builder(
            itemCount: activeFieldsMap.length,
            itemBuilder: (BuildContext context, int index){
-             return WeatherBlock(descriptionToIcon(activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.description), activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.city, activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.temp);
+             return WeatherBlock(descriptionToIcon(activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.description), activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.city, activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.temp, removeWeatherBox);
            },
          ))
          //ListView.builder(
@@ -164,9 +173,14 @@ class _MyHomePageState extends State<MyHomePage> {
          ///}
          //)
          ,
+         TextField(
+           onChanged: (String str){
+             currTxt=str;
+           }
+         ),
          IconButton(
            icon: Icon(Icons.add_circle_outline),
-           onPressed: (){},
+           onPressed: (){getWeather(currTxt.toLowerCase().capitalize());},
            color: Colors.amber[800],
            iconSize: 30.0,
         )

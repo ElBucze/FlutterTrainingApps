@@ -1,12 +1,14 @@
 
 import "package:flutter/material.dart";
 import './next_day_block.dart';
+import 'main.dart';
 
 class WeatherBlock extends StatelessWidget {
   String location;
   String temperature;
   IconData icon;
-  WeatherBlock(this.icon,this.location,this.temperature,);
+  final Function removeHandler;
+  WeatherBlock(this.icon,this.location,this.temperature,this.removeHandler);
   
 
   @override
@@ -37,7 +39,7 @@ class WeatherBlock extends StatelessWidget {
             icon,
             color: Colors.orange,
             size: 50.0,),
-            SizedBox(height: 10,),
+            SizedBox(height: 20,),
           Text(
             temperature + "°",
             textAlign: TextAlign.center,
@@ -72,7 +74,7 @@ class WeatherBlock extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(Icons.close),
                   color: Colors.grey[100],
-                  onPressed: (){},))
+                  onPressed: (){removeHandler(location);},))
         ]));
   }
 }
