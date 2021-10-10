@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import './weather_block.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -29,16 +30,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int activeFields = 0;
 
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
+      // activeFields without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      activeFields++;
     });
   }
 
@@ -64,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body:  Column(
        crossAxisAlignment: CrossAxisAlignment.center,
        children: [
+         WeatherBlock(Icons.wb_sunny_rounded, 'Szczecin', '26.3℃')
          
        ]
         
