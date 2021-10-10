@@ -3,6 +3,7 @@ import 'dart:convert';
 import './weather_block.dart';
 import './weather.dart';
 import 'package:http/http.dart' as http;
+import 'package:weather_icons/weather_icons.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,10 +47,50 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
   
+  IconData descriptionToIcon(String desc){
+    IconData i = Icons.not_interested;
+    switch(desc){
+      case 'Clear':{
+        i = WeatherIcons.day_sunny;
+      }
+      break;
+      case 'Clouds':{
+        i = WeatherIcons.cloud;
+      }
+      break;
+       case 'Snow':{
+        i = WeatherIcons.snow;
+      }
+      break;
+      case 'Rain':{
+        i = WeatherIcons.rain;
+      }
+      break;
+      case 'Drizzle':{
+        i = WeatherIcons.sprinkle;
+      }
+      break;
+      case 'Thunderstorm':{
+        i = WeatherIcons.thunderstorm;
+      }
+      break;
+      case 'Mist':{
+        i = WeatherIcons.fog;
+      }
+      break;
+      case 'Fog':{
+        i = WeatherIcons.fog;
+      }
+      break;     
+    }
+
+    return i;
+  }
+
   Future getWeather(cityName) async{
     http.Response response= await http.get(Uri.parse("http://api.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=b88a3c5bce2787dd5e8c0db43cd0ed5f"));
   var result = jsonDecode(response.body);
-  var tmp = Weather(cityName,result['main']['temp'].toString(),result['weather'][0]['description']);
+  var tmp = Weather(cityName,result['main']['temp'].toStringAsFixed(1),result['weather'][0]['main']);
   if(result['cod']==200){
   if(activeFieldsMap.containsKey(cityName))
   {
@@ -71,6 +112,8 @@ class _MyHomePageState extends State<MyHomePage> {
     getWeather('Szczecin');
     getWeather('Warszawa');
     getWeather('Boston');
+    getWeather('London');
+    getWeather('Berlin');
   }
 
 
@@ -111,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
          Flexible(child: ListView.builder(
            itemCount: activeFieldsMap.length,
            itemBuilder: (BuildContext context, int index){
-             return WeatherBlock(Icons.wb_sunny_rounded, activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.city, activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.temp);
+             return WeatherBlock(descriptionToIcon(activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.description), activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.city, activeFieldsMap[activeFieldsMap.keys.toList()[index]]!.temp);
            },
          ))
          //ListView.builder(

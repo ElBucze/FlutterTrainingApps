@@ -36,9 +36,10 @@ class WeatherBlock extends StatelessWidget {
             Icon(
             icon,
             color: Colors.orange,
-            size: 75.0,),
+            size: 50.0,),
+            SizedBox(height: 10,),
           Text(
-            temperature,
+            temperature + "°",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20.0, fontFamily: 'Roboto',color: Colors.grey[100],),
             )])),
