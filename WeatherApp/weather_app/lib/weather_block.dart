@@ -18,11 +18,11 @@ class WeatherBlock extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 120.0,
-      margin: EdgeInsets.all(5.0),
+      margin: const EdgeInsets.all(5.0),
       decoration: BoxDecoration(
         color: Colors.grey[850],
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.all(Radius.circular(20.0))
+        borderRadius: const BorderRadius.all(Radius.circular(20.0))
       ),
       child:
       Stack(

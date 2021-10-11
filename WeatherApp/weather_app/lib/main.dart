@@ -5,6 +5,7 @@ import './weather.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather_icons/weather_icons.dart';
 import 'package:string_extensions/string_extensions.dart';
+import './nav_bar.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -125,32 +126,22 @@ class _MyHomePageState extends State<MyHomePage> {
     getWeather('Oslo');
   }
 
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // activeFields without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      activeFields++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       backgroundColor: Colors.grey[700],
+      drawer: const NavBar(),
       appBar: AppBar(
         title: Text(widget.title,style: TextStyle(color: Colors.amber[800])),
         centerTitle: true,
         backgroundColor: Colors.grey[850],
-        leading: IconButton(
-          onPressed: () {},
-          icon:const Icon(Icons.menu),
-          color: Colors.amber[800],
-        ),
+        iconTheme: IconThemeData( color: Colors.amber[800]),
+        // leading: IconButton(
+        //   onPressed: () {},
+        //   icon:const Icon(Icons.menu),
+        //   color: Colors.amber[800],
+        // ),
         actions: [IconButton(
           icon:const Icon(Icons.search),
           onPressed: () {},
@@ -174,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
          //)
          ,
          TextField(
-           decoration:InputDecoration(
+           decoration: const InputDecoration(
            labelText: 'Enter city name'),
            style: TextStyle(color: Colors.grey[100]),
            onChanged: (String str){
@@ -182,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
            }
          ),
          IconButton(
-           icon: Icon(Icons.add_circle_outline),
+           icon: const Icon(Icons.add_circle_outline),
            onPressed: (){getWeather(currTxt.toLowerCase().capitalize());},
            color: Colors.amber[800],
            iconSize: 30.0,
