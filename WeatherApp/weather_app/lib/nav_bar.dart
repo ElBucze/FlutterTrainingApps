@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 class NavBar extends StatelessWidget {
-  const NavBar({ Key? key }) : super(key: key);
-
+  final Function clearAllHandler;
+  NavBar(this.clearAllHandler);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -27,7 +27,7 @@ class NavBar extends StatelessWidget {
           ),
 
           TextButton(
-            onPressed: (){}, 
+            onPressed: (){clearAllHandler();}, 
             child: Text('Clear all',style: TextStyle(color: Colors.grey[800]),),
             )
         ],

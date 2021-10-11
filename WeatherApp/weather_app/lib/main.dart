@@ -54,6 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void removeAll(){
+    var keysList = activeFieldsMap.keys.toList();
+    keysList.forEach((key){removeWeatherBox(key);});
+  }
+
   void newWeatherlocationHandler(){}
   
   IconData descriptionToIcon(String desc){
@@ -99,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future getWeather(cityName) async{
     http.Response response= await http.get(Uri.parse("http://api.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=b88a3c5bce2787dd5e8c0db43cd0ed5f"));
   var result = jsonDecode(response.body);
+  if (result['cod']!=200) return;
   var tmp = Weather(cityName,result['main']['temp'].toStringAsFixed(1),result['weather'][0]['main']);
   if(result['cod']==200){
   if(activeFieldsMap.containsKey(cityName))
@@ -131,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       backgroundColor: Colors.grey[700],
-      drawer: const NavBar(),
+      drawer: NavBar(removeAll),
       appBar: AppBar(
         title: Text(widget.title,style: TextStyle(color: Colors.amber[800])),
         centerTitle: true,
