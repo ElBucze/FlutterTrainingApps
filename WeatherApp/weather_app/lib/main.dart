@@ -41,17 +41,26 @@ class _MyHomePageState extends State<MyHomePage> {
   String currTxt = '';
   Map<String, Weather> activeFieldsMap = {};
   
+  final fieldText = TextEditingController();
   void addWeatherBox(Weather currWeather){
     setState((){
     activeFieldsMap[currWeather.city] = currWeather;
     activeFields++;
     });
+    FocusScope.of(context).unfocus();
+    fieldText.clear();
   }
   void removeWeatherBox(String city){
     setState((){
     activeFieldsMap.remove(city);
     activeFields++;
     });
+  }
+
+  void refresh(){
+    var keysList = activeFieldsMap.keys.toList();
+    keysList.forEach((key){removeWeatherBox(key);});
+    keysList.forEach((key){getWeather(key);});
   }
 
   void removeAll(){
@@ -106,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var result = jsonDecode(response.body);
   if (result['cod']!=200) return;
   var tmp = Weather(cityName,result['main']['temp'].toStringAsFixed(1),result['weather'][0]['main']);
-  if(result['cod']==200){
+  
   if(activeFieldsMap.containsKey(cityName))
   {
     activeFieldsMap[cityName]!.description=tmp.description;
@@ -116,10 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
   addWeatherBox(tmp);
   }
   }
-  else{
-    print('error');
-  }
-  }
+
   
   @override
   void initState(){
@@ -149,8 +155,8 @@ class _MyHomePageState extends State<MyHomePage> {
         //   color: Colors.amber[800],
         // ),
         actions: [IconButton(
-          icon:const Icon(Icons.search),
-          onPressed: () {},
+          icon:const Icon(Icons.refresh),
+          onPressed: refresh,
           color: Colors.amber[800],
         )],
       ),
@@ -171,12 +177,15 @@ class _MyHomePageState extends State<MyHomePage> {
          //)
          ,
          TextField(
+           controller: fieldText,
            decoration: const InputDecoration(
            labelText: 'Enter city name'),
            style: TextStyle(color: Colors.grey[100]),
            onChanged: (String str){
              currTxt=str;
-           }
+            
+           },
+           onEditingComplete: (){getWeather(currTxt.toLowerCase().capitalize());},
          ),
          IconButton(
            icon: const Icon(Icons.add_circle_outline),
